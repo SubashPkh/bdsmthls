@@ -195,7 +195,7 @@
             <label for="reportingMonth">Reporting Month:</label>
             <select id="reportingMonth" disabled>
                 <option value="" disabled selected>Select Month</option>
-                </select>
+            </select>
         </div>
 
         <div id="indicators">
@@ -222,724 +222,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    </tbody>
-            </table>
-        </div>
-
-        <div id="formActions">
-            <button type="submit" id="submitBtn">Submit</button>
-            <button type="button" id="editBtn" style="display: none;">Edit</button>
-            <button type="button" id="updateBtn" style="display: none;">Update</button>
-            <button type="button" id="downloadBtn" style="display: none;">Download (Excel)</button>
-        </div>
-
-        <div id="editLog">
-            <h3>Edit Log</h3>
-            <ul id="editLogList">
-                </ul>
-        </div>
-    </form>
-
-    <script>
-        const districtSelect = document.getElementById('district');
-        const subPartnerSelect = document.getElementById('subPartner');
-        const reportingYearSelect = document.getElementById('reportingYear');
-        const reportingMonthSelect = document.getElementById('reportingMonth');
-        const monthlyLogForm = document.getElementById('monthlyLogForm');
-        const indicatorsTableBody = document.querySelector('#indicators tbody');
-        const submitBtn = document.getElementById('submitBtn');
-        const editBtn = document.getElementById('editBtn');
-        const updateBtn = document.getElementById('updateBtn');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const formActions = document.getElementById('formActions');
-        const editLogDiv = document.getElementById('editLog');
-        const editLogList = document.getElementById('editLogList');
-
-        const districtSubPartners = {
-            Bara: ['Blue Heaven Nepal'],
-            Bardiya: ['Sundar Sansar'],
-            Bhaktapur: ['Our Equal Access'],
-            Dang: ['Human Health Society'],
-            Dhanusa: ['Sunaulo Bihan Samaj'],
-            Jhapa: ['Lead Nepal'],
-            Kanchanpur: ['Sahayatra Nepal'],
-            Kapilvastu: ['Nava Jeevan'],
-            Kathmandu: ['Cruiseaids Nepal'],
-            Mahottari: ['Chautari Nepal'],
-            Makawanpur: ['Friends Hetauda'],
-            Morang: ['Pariwartanshil Samaj'],
-            'Nawalparasi East': ['Empowerment Nepal'],
-            'Nawalparasi West': ['Empowerment Nepal'],
-            Parsa: ['Sahayatri Samaj'],
-            Rautahat: ['Saptarangi Samaj'],
-            Rupandehi: ['Mono Supportive Group'],
-            Saptari: ['Sahayogi Samaj Nepal'],
-            Sarlahi: ['Pahichan Nepal'],
-            Siraha: ['Jeevan Jyoti Samaj'],
-            Sunsari: ['Human Welfare Society']
-        };
-
-        const yearMonths = {
-            Year1: [
-                { value: 'April-2025', label: 'April 2025' },
-                { value: 'May-2025', label: 'May 2025' },
-                { value: 'June-2025', label: 'June 2025' },
-                { value: 'July-2025', label: 'July 2025' },
-                { value: 'August-2025', label: 'August 2025' },
-                { value: 'September-2025', label: 'September 2025' },
-                { value: 'October-2025', label: 'October 2025' },
-                { value: 'November-2025', label: 'November 2025' },
-                { value: 'December-2025', label: 'December 2025' },
-                { value: 'January-2026', label: 'January 2026' },
-                { value: 'February-2026', label: 'February 2026' },
-                { value: 'March-2026', label: 'March 2026' }
-            ],
-            Year2: [
-                { value: 'April-2026', label: 'April 2026' },
-                { value: 'May-2026', label: 'May 2026' },
-                { value: 'June-2026', label: 'June 2026' },
-                { value: 'July-2026', label: 'July 2026' },
-                { value: 'August-2026', label: 'August 2026' },
-                { value: 'September-2026', label: 'September 2026' },
-                { value: 'October-2026', label: 'October 2026' },
-                { value: 'November-2026', label: 'November 2026' },
-                { value: 'December-2026', label: 'December 2026' },
-                { value: 'January-2027', label: 'January 2027' },
-                { value: 'February-2027', label: 'February 2027' },
-                { value: 'March-2027', label: 'March 2027' }
-            ],
-            Year3: [
-                { value: 'April-2027', label: 'April 2027' },
-                { value: 'May-2027', label: 'May 2027' },
-                { value: 'June-2027', label: 'June 2027' },
-                { value: 'July-2027', label: 'July 2027' },
-                { value: 'August-2027', label: 'August 2027' },
-                { value: 'September-2027', label: 'September 2027' },
-                { value: 'October-2027', label: 'October 2027' },
-                { value: 'November-2027', label: 'November 2027' },
-                { value: 'December-2027', label: 'December 2027' },
-                { value: 'January-2028', label: 'January 2028' },
-                { value: 'February-2028', label: 'February 2028' },
-                { value: 'March-2028', label: 'March 2028' }
-            ],
-            Year4: [
-                { value: 'April-2028', label: 'April 2028' },
-                { value: 'May-2028', label: 'May 2028' },
-                { value: 'June-2028', label: 'June 2028' },
-                { value: 'July-2028', label: 'July 2028' },
-                { value: 'August-2028', label: 'August 2028' },
-                { value: 'September-2028', label: 'September 2028' },
-                { value: 'October-2028', label: 'October 2028' },
-                { value: 'November-2028', label: 'November 2028' },
-                { value: 'December-2028', label: 'December 2028' },
-                { value: 'January-2029', label: 'January 2029' },
-                { value: 'February-2029', label: 'February 2029' },
-                { value: 'March-2029', label: 'March 2029' }
-            ]
-        };
-
-        const indicatorsData =[
-            {
-                "indicator": "Number of new people contacted in HIV prevention",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "Number of old people reached by HIV prevention",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "Number of known positive contacted in outreach",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "CLT: Number of individuals tested for HIV from community led testing (CLT)",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "CLT_Reactive: Number of individuals reactive for HIV from community led testing",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "HTS_TST_POS: Number of KPs tested HIV positive",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "HTS_SELF: Number of self-test kits distributed during assisted and unassisted self-testing",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "TX_NEW Linked to ART: Number of adults and children newly enrolled on antiretroviral therapy (ART)",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "COMM_SUPP_RET: Number of HIV-positive KPs who are receiving care and support services outside of the health facility",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "Number of condoms distributed in outreach",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "Number of condoms distributed except from DIC/Office",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "Number of lubricants distributed in outreach",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "Number of lubricants distributed except from DIC/Office",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            }
-        ];
-
-        function populateIndicators() {
-            indicatorsData.forEach((indicatorItem, index) => {
-                const row = indicatorsTableBody.insertRow();
-                const cellSNo = row.insertCell();
-                const cellIndicator = row.insertCell();
-                const cellEstablishmentFSW = row.insertCell();
-                const cellHomeFSW = row.insertCell();
-                const cellStreetFSW = row.insertCell();
-                const cellVirtualFSW = row.insertCell();
-                const cellSubTotalFSW = row.insertCell();
-                const cellMSM = row.insertCell();
-                const cellMSW = row.insertCell();
-                const cellSubTotalMSM = row.insertCell();
-                const cellTGNSW = row.insertCell();
-                const cellTGSW = row.insertCell();
-                const cellSubTotalTG = row.insertCell();
-                const cellOtherMale = row.insertCell();
-                const cellOtherFemale = row.insertCell();
-                const cellSubTotalPP = row.insertCell();
-                const cellGrandTotal = row.insertCell();
-
-                cellSNo.textContent = index + 1;
-                cellIndicator.textContent = indicatorItem.indicator;
-                cellEstablishmentFSW.innerHTML = `<input type="text" name="indicator${index + 1}_establishment_fsw" class="establishment_fsw">`;
-                cellHomeFSW.innerHTML = `<input type="text" name="indicator${index + 1}_home_fsw" class="home_fsw">`;
-                cellStreetFSW.innerHTML = `<input type="text" name="indicator${index + 1}_street_fsw" class="street_fsw">`;
-                cellVirtualFSW.innerHTML = `<input type="text" name="indicator${index + 1}_virtual_fsw" class="virtual_fsw">`;
-                cellSubTotalFSW.classList.add('readonly', 'subtotal_fsw');
-                cellSubTotalFSW.readOnly = true;
-                cellMSM.innerHTML = `<input type="text" name="indicator${index + 1}_msm" class="msm">`;
-                cellMSW.innerHTML = `<input type="text" name="indicator${index + 1}_msw" class="msw">`;
-                cellSubTotalMSM.classList.add('readonly', 'subtotal_msm');
-                cellSubTotalMSM.readOnly = true;
-                cellTGNSW.innerHTML = `<input type="text" name="indicator${index + 1}_tgnsw" class="tgnsw">`;
-                cellTGSW.innerHTML = `<input type="text" name="indicator${index + 1}_tgsw" class="tgsw">`;
-                cellSubTotalTG.classList.add('readonly', 'subtotal_tg');
-                cellSubTotalTG.readOnly = true;
-                cellOtherMale.innerHTML = `<input type="text" name="indicator${index + 1}_other_male" class="other_male">`;
-                cellOtherFemale.innerHTML = `<input type="text" name="indicator${index + 1}_other_female" class="other_female">`;
-                cellSubTotalPP.classList.add('readonly', 'subtotal_pp');
-                cellSubTotalPP.readOnly = true;
-                cellGrandTotal.classList.add('readonly', 'grand_total');
-                cellGrandTotal.readOnly = true;
-            });
-
-            addInputEventListeners();
-            recalculateAllRows();
-        }
-
-        function addInputEventListeners() {
-            const indicatorInputs = document.querySelectorAll('#indicators input[type="text"]');
-            indicatorInputs.forEach(input => {
-                input.addEventListener('input', function() {
-                    this.value = this.value.replace(/[^0-9]/g, '');
-                    this.classList.remove('error');
-                    recalculateRow(this.closest('tr'));
-                });
-            });
-        }
-
-        function recalculateRow(row) {
-            const establishment_fsw = parseInt(row.querySelector('.establishment_fsw')?.value) || 0;
-            const home_fsw = parseInt(row.querySelector('.home_fsw')?.value) || 0;
-            const street_fsw = parseInt(row.querySelector('.street_fsw')?.value) || 0;
-            const virtual_fsw = parseInt(row.querySelector('.virtual_fsw')?.value) || 0;
-            const msm = parseInt(row.querySelector('.msm')?.value) || 0;
-            const msw = parseInt(row.querySelector('.msw')?.value) || 0;
-            const tgnsw = parseInt(row.querySelector('.tgnsw')?.value) || 0;
-            const tgsw = parseInt(row.querySelector('.tgsw')?.value) || 0;
-            const other_male = parseInt(row.querySelector('.other_male')?.value) || 0;
-            const other_female = parseInt(row.querySelector('.other_female')?.value) || 0;
-
-            const subtotal_fsw = establishment_fsw + home_fsw + street_fsw + virtual_fsw;
-            const subtotal_msm = msm + msw;
-            const subtotal_tg = tgnsw + tgsw;
-            const subtotal_pp = other_male + other_female;
-            const grand_total = subtotal_fsw + subtotal_msm + subtotal_tg + subtotal_pp;
-
-            row.querySelector('.subtotal_fsw').textContent = subtotal_fsw;
-            row.querySelector('.subtotal_msm').textContent = subtotal_msm;
-            row.querySelector('.subtotal_tg').textContent = subtotal_tg;
-            row.querySelector('.subtotal_pp').textContent = subtotal_pp;
-            row.querySelector('.grand_total').textContent = grand_total;
-        }
-
-        function recalculateAllRows() {
-            document.querySelectorAll('#indicators tbody tr').forEach(recalculateRow);
-        }
-
-        districtSelect.addEventListener('change', function() {
-            const selectedDistrict = this.value;
-            subPartnerSelect.innerHTML = '<option value="" disabled selected>Select Sub-Partner</option>';
-
-            if (selectedDistrict) {
-                const partners = districtSubPartners[selectedDistrict];
-                if (partners) {
-                    partners.forEach(partner => {
-                        const option = document.createElement('option');
-                        option.value = partner;
-                        option.textContent = partner;
-                        subPartnerSelect.appendChild(option);
-                    });
-                    subPartnerSelect.disabled = false;
-                } else {
-                    subPartnerSelect.disabled = true;
-                }
-            } else {
-                subPartnerSelect.innerHTML = '<option value="" disabled selected>Select District First</option>';
-                subPartnerSelect.disabled = true;
-            }
-            resetFormSubmissionState();
-        });
-
-        reportingYearSelect.addEventListener('change', function() {
-            const selectedYear = this.value;
-            reportingMonthSelect.innerHTML = '<option value="" disabled selected>Select Month</option>';
-            reportingMonthSelect.disabled = selectedYear === '';
-
-            if (selectedYear && yearMonths[selectedYear]) {
-                yearMonths[selectedYear].forEach(month => {
-                    const option = document.createElement('option');
-                    option.value = month.value;
-                    option.textContent = month.label;
-                    reportingMonthSelect.appendChild(option);
-                });
-            }
-            resetFormSubmissionState();
-        });
-
-        reportingMonthSelect.addEventListener('change', function() {
-            resetFormSubmissionState();
-            checkIfAlreadySubmitted();
-        });
-
-        let submittedReports = {}; // In a real application, this would come from a database
-
-        function checkIfAlreadySubmitted() {
-            const district = districtSelect.value;
-            const year = reportingYearSelect.value;
-            const month = reportingMonthSelect.value;
-            const key = `<span class="math-inline">\{district\}\-</span>{year}-${month}`;
-
-            if (submittedReports[key]) {
-                submitBtn.style.display = 'none';
-                editBtn.style.display = 'inline-block';
-                downloadBtn.style.display = 'inline-block';
-                populateFormWithData(submittedReports[key].data);
-            } else {
-                submitBtn.style.display = 'inline-block';
-                editBtn.style.display = 'none';
-                updateBtn.style.display = 'none';
-                downloadBtn.style.display = 'none';
-                resetIndicatorFields();
-            }
-        }
-
-        function populateFormWithData(data) {
-            indicatorsData.forEach((indicatorItem, index) => {
-                indicatorItem.columns.forEach(col => {
-                    const input = document.querySelector(`input[name="indicator${index + 1}_${col}"]`);
-                    if (input && data && data[`indicator${index + 1}_${col}`] !== undefined) {
-                        input.value = data[`indicator${index + 1}_${col}`];
-                    }
-                });
-            });
-            recalculateAllRows();
-        }
-
-        function resetIndicatorFields() {
-            const indicatorInputs = document.querySelectorAll('#indicators input[type="text"]');
-            indicatorInputs.forEach(input => {
-                input.value = '';
-                input.classList.remove('edited');
-            });
-            recalculateAllRows();
-            editLogDiv.style.display = 'none';
-            editLogList.innerHTML = '';
-        }
-
-        monthlyLogForm.addEventListener('submit', function(event) {
-            let hasError = false;
-            const numberInputs = document.querySelectorAll('#indicators input[type="text"]');
-
-            numberInputs.forEach(input => {
-                if (!/^[0-9]*$/.test(input.value)) {
-                    hasError = true;
-                    input.classList.add('error');
-                }
-            });
-
-            if (hasError) {
-                event.preventDefault();
-                alert('Please enter only numbers in all the indicator fields.');
-                return;
-            }
-
-            event.preventDefault(); // For demonstration, we'll handle submission with JS
-            const district = districtSelect.value;
-            const year = reportingYearSelect.value;
-            const month = reportingMonthSelect.value;
-            const key = `<span class="math-inline">\{district\}\-</span>{year}-${month}`;
-            const formData = {};
-            numberInputs.forEach(input => {
-                formData[input.name] = input.value;
-            });
-
-            submittedReports[key] = { data: formData };
-            alert(`Report for ${month} ${year} submitted successfully!`);
-            checkIfAlreadySubmitted(); // Update UI after submission
-        });
-
-        editBtn.addEventListener('click', function() {
-            submitBtn.style.display = 'none';
-            editBtn.style.display = 'none';
-            updateBtn.style.display = 'inline-block';
-            downloadBtn.style.display = 'none';
-
-            const indicatorInputs = document.querySelectorAll('#indicators input[type="text"]');
-            indicatorInputs.forEach(input => {
-                input.readOnly = false;
-            });
-        });
-
-        let editHistory = {};
-
-        updateBtn.addEventListener('click', function() {
-            let hasError = false;
-            const numberInputs = document.querySelectorAll('#indicators input[type="text"]');
-
-            numberInputs.forEach(input => {
-                if (!/^[0-9]*$/.test(input.value)) {
-                    hasError = true;
-                    input.classList.add('error');
-                }
-            });
-
-            if (hasError) {
-                alert('Please enter only numbers in all the indicator fields.');
-                return;
-            }
-
-            const district = districtSelect.value;
-            const year = reportingYearSelect.value;
-            const month = reportingMonthSelect.value;
-            const key = `<span class="math-inline">\{district\}\-</span>{year}-${month}`;
-            const updatedData = {};
-            const editedFields = [];
-
-            numberInputs.forEach(input => {
-                if (submittedReports[key]?.data[input.name] !== input.value) {
-                    updatedData[input.name] = input.value;
-                    input.classList.add('edited');
-                    editedFields.push({ field: input.name, oldValue: submittedReports[key]?.data[input.name], newValue: input.value });
-                }
-                updatedData[input.name] = input.value;
-            });
-
-            submittedReports[key].data = updatedData;
-            alert(`Report for ${month} ${year} updated successfully!`);
-            updateBtn.style.display = 'none';
-            submitBtn.style.display = 'none';
-            editBtn.style.display = 'inline-block';
-            downloadBtn.style.display = 'inline-block';
-
-            const indicatorInputs = document.querySelectorAll('#indicators input[type="text"]');
-            indicatorInputs.forEach(input => {
-                input.readOnly = true;
-            });
-
-            if (editedFields.length > 0) {
-                editLogDiv.style.display = 'block';
-                editedFields.forEach(change => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = `Field: ${change.field}, Old Value: ${change.oldValue || '-'}, New Value: ${change.newValue}`;
-                    editLogList.appendChild(listItem);
-                });
-            }
-        });
-
-        downloadBtn.addEventListener('click', function() {
-            alert('Download functionality will be implementedin a real application.');
-            // In a real scenario, you would trigger a server-side function or a client-side library
-            // to generate and download the Excel file based on the form data.
-        });
-
-        function resetFormSubmissionState() {
-            submitBtn.style.display = 'inline-block';
-            editBtn.style.display = 'none';
-            updateBtn.style.display = 'none';
-            downloadBtn.style.display = 'none';
-            const indicatorInputs = document.querySelectorAll('#indicators input[type="text"]');
-            indicatorInputs.forEach(input => input.readOnly = false);
-            editLogDiv.style.display = 'none';
-            editLogList.innerHTML = '';
-            const editedInputs = document.querySelectorAll('.edited');
-            editedInputs.forEach(input => input.classList.remove('edited'));
-        }
-
-        populateIndicators();
-        checkIfAlreadySubmitted(); // Check on initial load
-    </script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-<script>
-  // Your Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyCKz1TdBah_Buc7L5UgP6UQ3CB9PI6FFo4",
-    authDomain: "bds-monthly-logsheet.firebaseapp.com",
-    projectId: "bds-monthly-logsheet",
-    storageBucket: "bds-monthly-logsheet.firebasestorage.app",
-    messagingSenderId: "534197223006",
-    appId: "1:534197223006:web:3d6bb2380ced9c0e44becf"
-  };
-
-  // Initialize Firebase
-  const app = firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore(); // Initialize Firestore
-</script>
-</body>
-</html>
-=======
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Monthly Log Sheet</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background-color: #f4f7f6; /* Very light grey background */
-        }
-        h1, h2 {
-            text-align: center;
-            color: #37474f; /* Dark grey heading text */
-        }
-        h1 {
-            margin-bottom: 0.5em;
-        }
-        h2 {
-            margin-top: 0;
-        }
-        #monthlyLogForm {
-            margin-bottom: 2em; /* Increased margin at the bottom */
-            padding: 1em;
-            border: 1px solid #e0e0e0; /* Light grey border */
-            border-radius: 5px;
-            background-color: #fff; /* White form background */
-        }
-        #monthlyLogForm > div {
-            margin-bottom: 0.75em;
-        }
-        #monthlyLogForm label {
-            display: inline-block;
-            width: 150px;
-            text-align: left;
-            margin-right: 0.5em;
-            color: #546e7a; /* Medium grey label text */
-        }
-        #monthlyLogForm select,
-        #monthlyLogForm input[type="text"] {
-            width: 200px;
-            padding: 0.3em;
-            border: 1px solid #b0bec5; /* Light blue-grey border for inputs */
-            border-radius: 3px;
-            color: #37474f; /* Dark grey input text */
-        }
-        #indicators table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1em;
-            background-color: #fff; /* White table background */
-            border-radius: 5px;
-            overflow: hidden; /* To contain the border-radius for thead */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow */
-        }
-        #indicators thead {
-            background-color: #eceff1; /* Very light grey for header */
-            color: #546e7a; /* Medium grey header text */
-        }
-        #indicators th, #indicators td {
-            border: 1px solid #e0e0e0; /* Light grey border for cells */
-            padding: 0.75em 0.5em;
-            text-align: center;
-            color: #37474f; /* Dark grey cell text */
-        }
-        #indicators th {
-            font-weight: bold;
-        }
-        #indicators input[type="text"] { /* Changed input type to text */
-            width: 70px;
-            padding: 0.3em;
-            border: 1px solid #b0bec5; /* Light blue-grey border for number inputs */
-            border-radius: 3px;
-            color: #37474f; /* Dark grey input text */
-            background-color: #f8f8f8; /* Very light grey input background */
-            text-align: center; /* Center the text inside the input */
-        }
-        #indicators input[type="text"].error {
-            border-color: red;
-            background-color: #ffebee; /* Light red background for error */
-        }
-        #indicators input[type="text"].edited {
-            border-color: orange;
-            background-color: #fffde7; /* Light yellow background for edited */
-        }
-        #indicators .readonly {
-            background-color: #e8f5e9; /* Light green for readonly */
-            color: #388e3c; /* Dark green for readonly text */
-        }
-        #indicators td:first-child + td { /* Target the Indicator column */
-            text-align: left;
-        }
-        #indicators tbody tr:nth-child(even) {
-            background-color: #f9fbe7; /* Very light yellow for even rows */
-        }
-        #indicators tbody tr:hover {
-            background-color: #f0f4c3; /* Slightly darker light yellow on hover */
-        }
-        #formActions {
-            text-align: center;
-            margin-top: 20px;
-        }
-        #formActions button {
-            padding: 0.7em 1.5em;
-            margin: 0 10px;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        #submitBtn {
-            background-color: #4caf50; /* Green submit button */
-        }
-        #submitBtn:hover {
-            background-color: #388e3c;
-        }
-        #editBtn, #updateBtn {
-            background-color: #2196f3; /* Blue edit/update button */
-        }
-        #editBtn:hover, #updateBtn:hover {
-            background-color: #1976d2;
-        }
-        #downloadBtn {
-            background-color: #ff9800; /* Orange download button */
-        }
-        #downloadBtn:hover {
-            background-color: #f57c00;
-        }
-        #submitBtn:disabled {
-            background-color: #bdbdbd;
-            cursor: not-allowed;
-        }
-        #editLog {
-            margin-top: 20px;
-            padding: 1em;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            background-color: #f9fbe7; /* Light yellow for edit log */
-            display: none; /* Initially hidden */
-        }
-        #editLog h3 {
-            color: #546e7a;
-            margin-top: 0;
-        }
-    </style>
-</head>
-<body>
-    <h1>BDS HIV Community Services</h1>
-    <h2>Monthly Log Sheet</h2>
-    <form id="monthlyLogForm">
-        <div>
-            <label for="district">Select District:</label>
-            <select id="district">
-                <option value="" disabled selected>Select District</option>
-                <option value="Bara">Bara</option>
-                <option value="Bardiya">Bardiya</option>
-                <option value="Bhaktapur">Bhaktapur</option>
-                <option value="Dang">Dang</option>
-                <option value="Dhanusa">Dhanusa</option>
-                <option value="Jhapa">Jhapa</option>
-                <option value="Kanchanpur">Kanchanpur</option>
-                <option value="Kapilvastu">Kapilvastu</option>
-                <option value="Kathmandu">Kathmandu</option>
-                <option value="Mahottari">Mahottari</option>
-                <option value="Makawanpur">Makawanpur</option>
-                <option value="Morang">Morang</option>
-                <option value="Nawalparasi East">Nawalparasi East</option>
-                <option value="Nawalparasi West">Nawalparasi West</option>
-                <option value="Parsa">Parsa</option>
-                <option value="Rautahat">Rautahat</option>
-                <option value="Rupandehi">Rupandehi</option>
-                <option value="Saptari">Saptari</option>
-                <option value="Sarlahi">Sarlahi</option>
-                <option value="Siraha">Siraha</option>
-                <option value="Sunsari">Sunsari</option>
-            </select>
-        </div>
-        <div>
-            <label for="subPartner">Sub-Partner's Name:</label>
-            <select id="subPartner">
-                <option value="" disabled selected>Select Sub-Partner</option>
-            </select>
-        </div>
-        <div>
-            <label for="reportingYear">Reporting Year:</label>
-            <select id="reportingYear">
-                <option value="" disabled selected>Select Year</option>
-                <option value="Year1">Year1 (April 2025 - March 2026)</option>
-                <option value="Year2">Year2 (April 2026 - March 2027)</option>
-                <option value="Year3">Year3 (April 2027 - March 2028)</option>
-                <option value="Year4">Year4 (April 2028 - March 2029)</option>
-            </select>
-        </div>
-        <div>
-            <label for="reportingMonth">Reporting Month:</label>
-            <select id="reportingMonth" disabled>
-                <option value="" disabled selected>Select Month</option>
-                </select>
-        </div>
-
-        <div id="indicators">
-            <table>
-                <thead>
-                    <tr>
-                        <th>S. No.</th>
-                        <th>Indicator</th>
-                        <th>Establishment based FSW</th>
-                        <th>Home based FSW</th>
-                        <th>Street based FSW</th>
-                        <th>Virtual FSW</th>
-                        <th>Sub-Total FSW</th>
-                        <th>MSM</th>
-                        <th>MSW</th>
-                        <th>Sub-Total MSM</th>
-                        <th>TG Non SW</th>
-                        <th>TG SW</th>
-                        <th>Sub-Total TG</th>
-                        <th>Other Male</th>
-                        <th>Other Female</th>
-                        <th>Sub-Total PP</th>
-                        <th>Grand Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    </tbody>
+                </tbody>
             </table>
         </div>
 
@@ -953,7 +236,7 @@
         <div id="editLog">
             <h3>Edit Log</h3>
             <ul id="editLogList">
-                </ul>
+            </ul>
         </div>
     </form>
 
@@ -1027,7 +310,7 @@
             ],
             Year3: [
                 { value: 'April-2027', label: 'April 2027' },
-                { value: 'May-2027', label: 'May 2027' },
+              	{ value: 'May-2027', label: 'May 2027' },
                 { value: 'June-2027', label: 'June 2027' },
                 { value: 'July-2027', label: 'July 2027' },
                 { value: 'August-2027', label: 'August 2027' },
@@ -1055,350 +338,197 @@
             ]
         };
 
-        const indicatorsData =[
+        // Assuming a more complete structure for indicatorsData
+        const indicatorsData = [
             {
                 "indicator": "Number of new people contacted in HIV prevention",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
+                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tg_non_sw", "tg_sw", "other_male", "other_female"]
             },
             {
-                "indicator": "Number of old people reached by HIV prevention",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
+                "indicator": "Number of condoms distributed",
+                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tg_non_sw", "tg_sw", "other_male", "other_female"]
             },
-            {
-                "indicator": "Number of known positive contacted in outreach",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "CLT: Number of individuals tested for HIV from community led testing (CLT)",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "CLT_Reactive: Number of individuals reactive for HIV from community led testing",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "HTS_TST_POS: Number of KPs tested HIV positive",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "HTS_SELF: Number of self-test kits distributed during assisted and unassisted self-testing",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "TX_NEW Linked to ART: Number of adults and children newly enrolled on antiretroviral therapy (ART)",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "COMM_SUPP_RET: Number of HIV-positive KPs who are receiving care and support services outside of the health facility",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "Number of condoms distributed in outreach",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "Number of condoms distributed except from DIC/Office",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "Number of lubricants distributed in outreach",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            },
-            {
-                "indicator": "Number of lubricants distributed except from DIC/Office",
-                "columns": ["establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw", "msm", "msw", "tgnsw", "tgsw", "other_male", "other_female"]
-            }
+            // Add more indicator data here as needed
         ];
 
-        function populateIndicators() {
-            indicatorsData.forEach((indicatorItem, index) => {
-                const row = indicatorsTableBody.insertRow();
-                const cellSNo = row.insertCell();
-                const cellIndicator = row.insertCell();
-                const cellEstablishmentFSW = row.insertCell();
-                const cellHomeFSW = row.insertCell();
-                const cellStreetFSW = row.insertCell();
-                const cellVirtualFSW = row.insertCell();
-                const cellSubTotalFSW = row.insertCell();
-                const cellMSM = row.insertCell();
-                const cellMSW = row.insertCell();
-                const cellSubTotalMSM = row.insertCell();
-                const cellTGNSW = row.insertCell();
-                const cellTGSW = row.insertCell();
-                const cellSubTotalTG = row.insertCell();
-                const cellOtherMale = row.insertCell();
-                const cellOtherFemale = row.insertCell();
-                const cellSubTotalPP = row.insertCell();
-                const cellGrandTotal = row.insertCell();
-
-                cellSNo.textContent = index + 1;
-                cellIndicator.textContent = indicatorItem.indicator;
-                cellEstablishmentFSW.innerHTML = `<input type="text" name="indicator${index + 1}_establishment_fsw" class="establishment_fsw">`;
-                cellHomeFSW.innerHTML = `<input type="text" name="indicator${index + 1}_home_fsw" class="home_fsw">`;
-                cellStreetFSW.innerHTML = `<input type="text" name="indicator${index + 1}_street_fsw" class="street_fsw">`;
-                cellVirtualFSW.innerHTML = `<input type="text" name="indicator${index + 1}_virtual_fsw" class="virtual_fsw">`;
-                cellSubTotalFSW.classList.add('readonly', 'subtotal_fsw');
-                cellSubTotalFSW.readOnly = true;
-                cellMSM.innerHTML = `<input type="text" name="indicator${index + 1}_msm" class="msm">`;
-                cellMSW.innerHTML = `<input type="text" name="indicator${index + 1}_msw" class="msw">`;
-                cellSubTotalMSM.classList.add('readonly', 'subtotal_msm');
-                cellSubTotalMSM.readOnly = true;
-                cellTGNSW.innerHTML = `<input type="text" name="indicator${index + 1}_tgnsw" class="tgnsw">`;
-                cellTGSW.innerHTML = `<input type="text" name="indicator${index + 1}_tgsw" class="tgsw">`;
-                cellSubTotalTG.classList.add('readonly', 'subtotal_tg');
-                cellSubTotalTG.readOnly = true;
-                cellOtherMale.innerHTML = `<input type="text" name="indicator${index + 1}_other_male" class="other_male">`;
-                cellOtherFemale.innerHTML = `<input type="text" name="indicator${index + 1}_other_female" class="other_female">`;
-                cellSubTotalPP.classList.add('readonly', 'subtotal_pp');
-                cellSubTotalPP.readOnly = true;
-                cellGrandTotal.classList.add('readonly', 'grand_total');
-                cellGrandTotal.readOnly = true;
-            });
-
-            addInputEventListeners();
-            recalculateAllRows();
-        }
-
-        function addInputEventListeners() {
-            const indicatorInputs = document.querySelectorAll('#indicators input[type="text"]');
-            indicatorInputs.forEach(input => {
-                input.addEventListener('input', function() {
-                    this.value = this.value.replace(/[^0-9]/g, '');
-                    this.classList.remove('error');
-                    recalculateRow(this.closest('tr'));
-                });
-            });
-        }
-
-        function recalculateRow(row) {
-            const establishment_fsw = parseInt(row.querySelector('.establishment_fsw')?.value) || 0;
-            const home_fsw = parseInt(row.querySelector('.home_fsw')?.value) || 0;
-            const street_fsw = parseInt(row.querySelector('.street_fsw')?.value) || 0;
-            const virtual_fsw = parseInt(row.querySelector('.virtual_fsw')?.value) || 0;
-            const msm = parseInt(row.querySelector('.msm')?.value) || 0;
-            const msw = parseInt(row.querySelector('.msw')?.value) || 0;
-            const tgnsw = parseInt(row.querySelector('.tgnsw')?.value) || 0;
-            const tgsw = parseInt(row.querySelector('.tgsw')?.value) || 0;
-            const other_male = parseInt(row.querySelector('.other_male')?.value) || 0;
-            const other_female = parseInt(row.querySelector('.other_female')?.value) || 0;
-
-            const subtotal_fsw = establishment_fsw + home_fsw + street_fsw + virtual_fsw;
-            const subtotal_msm = msm + msw;
-            const subtotal_tg = tgnsw + tgsw;
-            const subtotal_pp = other_male + other_female;
-            const grand_total = subtotal_fsw + subtotal_msm + subtotal_tg + subtotal_pp;
-
-            row.querySelector('.subtotal_fsw').textContent = subtotal_fsw;
-            row.querySelector('.subtotal_msm').textContent = subtotal_msm;
-            row.querySelector('.subtotal_tg').textContent = subtotal_tg;
-            row.querySelector('.subtotal_pp').textContent = subtotal_pp;
-            row.querySelector('.grand_total').textContent = grand_total;
-        }
-
-        function recalculateAllRows() {
-            document.querySelectorAll('#indicators tbody tr').forEach(recalculateRow);
-        }
-
-        districtSelect.addEventListener('change', function() {
-            const selectedDistrict = this.value;
+        function populateSubPartners(district) {
             subPartnerSelect.innerHTML = '<option value="" disabled selected>Select Sub-Partner</option>';
-
-            if (selectedDistrict) {
-                const partners = districtSubPartners[selectedDistrict];
-                if (partners) {
-                    partners.forEach(partner => {
-                        const option = document.createElement('option');
-                        option.value = partner;
-                        option.textContent = partner;
-                        subPartnerSelect.appendChild(option);
-                    });
-                    subPartnerSelect.disabled = false;
-                } else {
-                    subPartnerSelect.disabled = true;
-                }
-            } else {
-                subPartnerSelect.innerHTML = '<option value="" disabled selected>Select District First</option>';
-                subPartnerSelect.disabled = true;
+            if (district && districtSubPartners[district]) {
+                districtSubPartners[district].forEach(partner => {
+                    const option = document.createElement('option');
+                    option.value = partner;
+                    option.textContent = partner;
+                    subPartnerSelect.appendChild(option);
+                });
             }
-            resetFormSubmissionState();
-        });
+        }
 
-        reportingYearSelect.addEventListener('change', function() {
-            const selectedYear = this.value;
+        function populateMonths(year) {
             reportingMonthSelect.innerHTML = '<option value="" disabled selected>Select Month</option>';
-            reportingMonthSelect.disabled = selectedYear === '';
-
-            if (selectedYear && yearMonths[selectedYear]) {
-                yearMonths[selectedYear].forEach(month => {
+            reportingMonthSelect.disabled = true;
+            if (year && yearMonths[year]) {
+                reportingMonthSelect.disabled = false;
+                yearMonths[year].forEach(month => {
                     const option = document.createElement('option');
                     option.value = month.value;
                     option.textContent = month.label;
                     reportingMonthSelect.appendChild(option);
                 });
             }
-            resetFormSubmissionState();
-        });
+        }
 
-        reportingMonthSelect.addEventListener('change', function() {
-            resetFormSubmissionState();
-            checkIfAlreadySubmitted();
-        });
+        function populateIndicators() {
+            indicatorsTableBody.innerHTML = '';
+            indicatorsData.forEach((indicatorObj, index) => {
+                const row = indicatorsTableBody.insertRow();
+                const serialNumberCell = row.insertCell();
+                const indicatorCell = row.insertCell();
 
-        let submittedReports = {}; // In a real application, this would come from a database
+                serialNumberCell.textContent = index + 1;
+                indicatorCell.textContent = indicatorObj.indicator;
+
+                const inputColumns = [
+                    "establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw",
+                    "msm", "msw",
+                    "tg_non_sw", "tg_sw",
+                    "other_male", "other_female"
+                ];
+
+                inputColumns.forEach(col => {
+                    const cell = row.insertCell();
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.classList.add('indicator-input');
+                    input.dataset.indicatorIndex = index;
+                    input.dataset.column = col;
+                    cell.appendChild(input);
+                });
+
+                // Add sub-total cells (initially empty)
+                row.insertCell().classList.add('subtotal-fsw', 'readonly');
+                row.insertCell(); // Empty for MSM
+                row.insertCell(); // Empty for MSW
+                row.insertCell().classList.add('subtotal-msm', 'readonly');
+                row.insertCell(); // Empty for TG Non SW
+                row.insertCell(); // Empty for TG SW
+                row.insertCell().classList.add('subtotal-tg', 'readonly');
+                row.insertCell().classList.add('readonly'); // Other Male
+                row.insertCell().classList.add('readonly'); // Other Female
+                row.insertCell().classList.add('subtotal-pp', 'readonly');
+                row.insertCell().classList.add('grand-total', 'readonly');
+            });
+
+            // Add event listeners for input changes to handle calculations and editing
+            const indicatorInputs = document.querySelectorAll('#indicators input.indicator-input');
+            indicatorInputs.forEach(input => {
+                input.addEventListener('input', handleIndicatorInputChange);
+                input.addEventListener('focus', () => input.classList.remove('error'));
+            });
+        }
+
+        function handleIndicatorInputChange(event) {
+            const input = event.target;
+            input.classList.add('edited');
+            if (input.value && !/^\d+$/.test(input.value)) {
+                input.classList.add('error');
+            } else {
+                input.classList.remove('error');
+                calculateTotalsForRow(input.closest('tr'));
+                calculateGrandTotal();
+            }
+        }
+
+        function calculateTotalsForRow(row) {
+            const inputs = row.querySelectorAll('input.indicator-input');
+            let fsw = 0;
+            let msm = 0;
+            let tg = 0;
+            let pp = 0;
+            let otherMale = parseInt(inputs[8]?.value || 0);
+            let otherFemale = parseInt(inputs[9]?.value || 0);
+
+            for (let i = 0; i < inputs.length; i++) {
+                const value = parseInt(inputs[i].value || 0);
+                if (i < 4) { // Establishment, Home, Street, Virtual FSW
+                    fsw += value;
+                } else if (i === 4 || i === 5) { // MSM, MSW
+                    msm += value;
+                } else if (i === 6 || i === 7) { // TG Non SW, TG SW
+                    tg += value;
+                }
+            }
+
+            pp = otherMale + otherFemale;
+            const grandTotal = fsw + msm + tg + pp;
+
+            row.querySelector('.subtotal-fsw').textContent = fsw;
+            row.querySelector('.subtotal-msm').textContent = msm;
+            row.querySelector('.subtotal-tg').textContent = tg;
+            row.querySelector('.subtotal-pp').textContent = pp;
+            row.querySelector('.grand-total').textContent = grandTotal;
+        }
+
+        function calculateGrandTotal() {
+            let grandTotal = 0;
+            document.querySelectorAll('#indicators tbody tr').forEach(row => {
+                grandTotal += parseInt(row.querySelector('.grand-total').textContent || 0);
+            });
+            // You might want to display this grand total somewhere outside the table if needed.
+            // For now, it's calculated within each row.
+        }
 
         function checkIfAlreadySubmitted() {
+            // Placeholder for API call or local storage check
             const district = districtSelect.value;
-            const year = reportingYearSelect.value;
-            const month = reportingMonthSelect.value;
-            const key = `<span class="math-inline">\{district\}\-</span>{year}-${month}`;
+            const subPartner = subPartnerSelect.value;
+            const reportingYear = reportingYearSelect.value;
+            const reportingMonth = reportingMonthSelect.value;
 
-            if (submittedReports[key]) {
-                submitBtn.style.display = 'none';
-                editBtn.style.display = 'inline-block';
-                downloadBtn.style.display = 'inline-block';
-                populateFormWithData(submittedReports[key].data);
+            if (district && subPartner && reportingYear && reportingMonth) {
+                // Simulate checking if data exists
+                const alreadySubmitted = false; // Replace with actual check
+
+                if (alreadySubmitted) {
+                    submitBtn.style.display = 'none';
+                    editBtn.style.display = 'inline-block';
+                    downloadBtn.style.display = 'inline-block';
+                    // Optionally, load the existing data into the form
+                    // loadSubmittedData(district, subPartner, reportingYear, reportingMonth);
+                    disableInputFields();
+                } else {
+                    submitBtn.style.display = 'inline-block';
+                    editBtn.style.display = 'none';
+                    updateBtn.style.display = 'none';
+                    downloadBtn.style.display = 'none';
+                    enableInputFields();
+                }
             } else {
-                submitBtn.style.display = 'inline-block';
+                submitBtn.disabled = true;
                 editBtn.style.display = 'none';
                 updateBtn.style.display = 'none';
                 downloadBtn.style.display = 'none';
-                resetIndicatorFields();
             }
         }
 
-        function populateFormWithData(data) {
-            indicatorsData.forEach((indicatorItem, index) => {
-                indicatorItem.columns.forEach(col => {
-                    const input = document.querySelector(`input[name="indicator${index + 1}_${col}"]`);
-                    if (input && data && data[`indicator${index + 1}_${col}`] !== undefined) {
-                        input.value = data[`indicator${index + 1}_${col}`];
-                    }
-                });
-            });
-            recalculateAllRows();
+        function disableInputFields() {
+            const selects = document.querySelectorAll('#monthlyLogForm select');
+            const inputs = document.querySelectorAll('#indicators input[type="text"]');
+            selects.forEach(select => select.disabled = true);
+            inputs.forEach(input => input.readOnly = true);
         }
 
-        function resetIndicatorFields() {
-            const indicatorInputs = document.querySelectorAll('#indicators input[type="text"]');
-            indicatorInputs.forEach(input => {
-                input.value = '';
-                input.classList.remove('edited');
-            });
-            recalculateAllRows();
-            editLogDiv.style.display = 'none';
-            editLogList.innerHTML = '';
+        function enableInputFields() {
+            const selects = document.querySelectorAll('#monthlyLogForm select');
+            const inputs = document.querySelectorAll('#indicators input[type="text"]');
+            selects.forEach(select => select.disabled = false);
+            inputs.forEach(input => input.readOnly = false);
         }
 
-        monthlyLogForm.addEventListener('submit', function(event) {
-            let hasError = false;
-            const numberInputs = document.querySelectorAll('#indicators input[type="text"]');
-
-            numberInputs.forEach(input => {
-                if (!/^[0-9]*$/.test(input.value)) {
-                    hasError = true;
-                    input.classList.add('error');
-                }
-            });
-
-            if (hasError) {
-                event.preventDefault();
-                alert('Please enter only numbers in all the indicator fields.');
-                return;
-            }
-
-            event.preventDefault(); // For demonstration, we'll handle submission with JS
-            const district = districtSelect.value;
-            const year = reportingYearSelect.value;
-            const month = reportingMonthSelect.value;
-            const key = `<span class="math-inline">\{district\}\-</span>{year}-${month}`;
-            const formData = {};
-            numberInputs.forEach(input => {
-                formData[input.name] = input.value;
-            });
-
-            submittedReports[key] = { data: formData };
-            alert(`Report for ${month} ${year} submitted successfully!`);
-            checkIfAlreadySubmitted(); // Update UI after submission
-        });
-
-        editBtn.addEventListener('click', function() {
+        function handleEdit() {
+            enableInputFields();
             submitBtn.style.display = 'none';
             editBtn.style.display = 'none';
             updateBtn.style.display = 'inline-block';
-            downloadBtn.style.display = 'none';
-
-            const indicatorInputs = document.querySelectorAll('#indicators input[type="text"]');
-            indicatorInputs.forEach(input => {
-                input.readOnly = false;
-            });
-        });
-
-        let editHistory = {};
-
-        updateBtn.addEventListener('click', function() {
-            let hasError = false;
-            const numberInputs = document.querySelectorAll('#indicators input[type="text"]');
-
-            numberInputs.forEach(input => {
-                if (!/^[0-9]*$/.test(input.value)) {
-                    hasError = true;
-                    input.classList.add('error');
-                }
-            });
-
-            if (hasError) {
-                alert('Please enter only numbers in all the indicator fields.');
-                return;
-            }
-
-            const district = districtSelect.value;
-            const year = reportingYearSelect.value;
-            const month = reportingMonthSelect.value;
-            const key = `<span class="math-inline">\{district\}\-</span>{year}-${month}`;
-            const updatedData = {};
-            const editedFields = [];
-
-            numberInputs.forEach(input => {
-                if (submittedReports[key]?.data[input.name] !== input.value) {
-                    updatedData[input.name] = input.value;
-                    input.classList.add('edited');
-                    editedFields.push({ field: input.name, oldValue: submittedReports[key]?.data[input.name], newValue: input.value });
-                }
-                updatedData[input.name] = input.value;
-            });
-
-            submittedReports[key].data = updatedData;
-            alert(`Report for ${month} ${year} updated successfully!`);
-            updateBtn.style.display = 'none';
-            submitBtn.style.display = 'none';
-            editBtn.style.display = 'inline-block';
-            downloadBtn.style.display = 'inline-block';
-
-            const indicatorInputs = document.querySelectorAll('#indicators input[type="text"]');
-            indicatorInputs.forEach(input => {
-                input.readOnly = true;
-            });
-
-            if (editedFields.length > 0) {
-                editLogDiv.style.display = 'block';
-                editedFields.forEach(change => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = `Field: ${change.field}, Old Value: ${change.oldValue || '-'}, New Value: ${change.newValue}`;
-                    editLogList.appendChild(listItem);
-                });
-            }
-        });
-
-        downloadBtn.addEventListener('click', function() {
-            alert('Download functionality will be implementedin a real application.');
-            // In a real scenario, you would trigger a server-side function or a client-side library
-            // to generate and download the Excel file based on the form data.
-        });
-
-        function resetFormSubmissionState() {
-            submitBtn.style.display = 'inline-block';
-            editBtn.style.display = 'none';
-            updateBtn.style.display = 'none';
             downloadBtn.style.display = 'none';
             const indicatorInputs = document.querySelectorAll('#indicators input[type="text"]');
             indicatorInputs.forEach(input => input.readOnly = false);
@@ -1408,41 +538,121 @@
             editedInputs.forEach(input => input.classList.remove('edited'));
         }
 
-        populateIndicators();
-        checkIfAlreadySubmitted(); // Check on initial load
-    </script> const logSheetForm = document.getElementById('logSheetForm');
-        const submitBtn = document.getElementById('submitBtn');
+        function handleUpdate(event) {
+            event.preventDefault();
+            // Collect updated data
+            const formData = getFormData();
+            // Placeholder for API call to update data
+            console.log('Updating data:', formData);
+            // After successful update, you might want to:
+            // - Disable the form again
+            // - Show a success message
+            // - Update the edit log
+            disableInputFields();
+            submitBtn.style.display = 'none';
+            editBtn.style.display = 'inline-block';
+            updateBtn.style.display = 'none';
+            downloadBtn.style.display = 'inline-block';
+            // Simulate adding to edit log
+            const listItem = document.createElement('li');
+            listItem.textContent = `Updated on ${new Date().toLocaleString()}`;
+            editLogList.appendChild(listItem);
+            editLogDiv.style.display = 'block';
+        }
 
-        logSheetForm.addEventListener('submit', (event) => {
-            event.preventDefault(); // Prevent default form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+            if (!monthlyLogForm.checkValidity()) {
+                alert('Please fill in all required fields and correct any errors.');
+                return;
+            }
 
-            // Collect form data
-            const district = document.getElementById('district').value;
-            const subPartner = document.getElementById('subPartner').value;
-            const reportingYear = document.getElementById('reportingYear').value;
-            const reportingMonth = document.getElementById('reportingMonth').value;
+            const formData = getFormData();
+            // Placeholder for API call to submit data
+            console.log('Submitting data:', formData);
+            // After successful submission, you might want to:
+            // - Disable the form
+            // - Show a success message
+            // - Update the edit log
+            disableInputFields();
+            submitBtn.disabled = true;
+            editBtn.style.display = 'inline-block';
+            downloadBtn.style.display = 'inline-block';
+            // Simulate adding to edit log
+            const listItem = document.createElement('li');
+            listItem.textContent = `Submitted on ${new Date().toLocaleString()}`;
+            editLogList.appendChild(listItem);
+            editLogDiv.style.display = 'block';
+        }
 
-            // Create a data object to send to Firestore
+        function getFormData() {
             const formData = {
-                district: district,
-                subPartner: subPartner,
-                reportingYear: parseInt(reportingYear), // Convert to number if needed
-                reportingMonth: reportingMonth,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Add a server timestamp
-                // Add other form data fields here
+                district: districtSelect.value,
+                subPartner: subPartnerSelect.value,
+                reportingYear: reportingYearSelect.value,
+                reportingMonth: reportingMonthSelect.value,
+                indicators: []
             };
 
-            // Add data to Firestore
-            db.collection('submissions').add(formData)
-                .then((docRef) => {
-                    console.log('Document written with ID: ', docRef.id);
-                    alert('Log sheet submitted successfully!');
-                    logSheetForm.reset(); // Clear the form
-                })
-                .catch((error) => {
-                    console.error('Error adding document: ', error);
-                    alert('Error submitting log sheet. Please try again.');
+            document.querySelectorAll('#indicators tbody tr').forEach(row => {
+                const indicatorData = {};
+                indicatorData.indicator = row.querySelector('td:nth-child(2)').textContent;
+                const inputs = row.querySelectorAll('input.indicator-input');
+                const columns = [
+                    "establishment_fsw", "home_fsw", "street_fsw", "virtual_fsw",
+                    "msm", "msw",
+                    "tg_non_sw", "tg_sw",
+                    "other_male", "other_female"
+                ];
+                inputs.forEach((input, index) => {
+                    indicatorData[columns[index]] = input.value;
                 });
+                formData.indicators.push(indicatorData);
+            });
+            return formData;
+        }
+
+        function handleDownload() {
+            const formData = getFormData();
+            // Placeholder for function to convert formData to Excel and trigger download
+            console.log('Downloading data:', formData);
+            alert('Download functionality will be implemented here.');
+        }
+
+        districtSelect.addEventListener('change', (event) => {
+            populateSubPartners(event.target.value);
+            reportingMonthSelect.disabled = true;
+            reportingMonthSelect.innerHTML = '<option value="" disabled selected>Select Month</option>';
+            submitBtn.disabled = !districtSelect.value || !subPartnerSelect.value || !reportingYearSelect.value || !reportingMonthSelect.value;
+            checkIfAlreadySubmitted();
         });
+
+        subPartnerSelect.addEventListener('change', () => {
+            submitBtn.disabled = !districtSelect.value || !subPartnerSelect.value || !reportingYearSelect.value || !reportingMonthSelect.value;
+            checkIfAlreadySubmitted();
+        });
+
+        reportingYearSelect.addEventListener('change', (event) => {
+            populateMonths(event.target.value);
+            submitBtn.disabled = !districtSelect.value || !subPartnerSelect.value || !reportingYearSelect.value || !reportingMonthSelect.value;
+            checkIfAlreadySubmitted();
+        });
+
+        reportingMonthSelect.addEventListener('change', () => {
+            submitBtn.disabled = !districtSelect.value || !subPartnerSelect.value || !reportingYearSelect.value || !reportingMonthSelect.value;
+            checkIfAlreadySubmitted();
+        });
+
+        monthlyLogForm.addEventListener('submit', handleSubmit);
+        editBtn.addEventListener('click', handleEdit);
+        updateBtn.addEventListener('click', handleUpdate);
+        downloadBtn.addEventListener('click', handleDownload);
+
+        populateSubPartners(districtSelect.value);
+        populateMonths(reportingYearSelect.value);
+        populateIndicators();
+        checkIfAlreadySubmitted(); // Check on initial load
+        submitBtn.disabled = true; // Initially disable submit button
+    </script>
 </body>
 </html>
