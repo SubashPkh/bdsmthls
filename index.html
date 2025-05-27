@@ -1410,6 +1410,39 @@
 
         populateIndicators();
         checkIfAlreadySubmitted(); // Check on initial load
-    </script>
+    </script> const logSheetForm = document.getElementById('logSheetForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        logSheetForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            // Collect form data
+            const district = document.getElementById('district').value;
+            const subPartner = document.getElementById('subPartner').value;
+            const reportingYear = document.getElementById('reportingYear').value;
+            const reportingMonth = document.getElementById('reportingMonth').value;
+
+            // Create a data object to send to Firestore
+            const formData = {
+                district: district,
+                subPartner: subPartner,
+                reportingYear: parseInt(reportingYear), // Convert to number if needed
+                reportingMonth: reportingMonth,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Add a server timestamp
+                // Add other form data fields here
+            };
+
+            // Add data to Firestore
+            db.collection('submissions').add(formData)
+                .then((docRef) => {
+                    console.log('Document written with ID: ', docRef.id);
+                    alert('Log sheet submitted successfully!');
+                    logSheetForm.reset(); // Clear the form
+                })
+                .catch((error) => {
+                    console.error('Error adding document: ', error);
+                    alert('Error submitting log sheet. Please try again.');
+                });
+        });
 </body>
 </html>
